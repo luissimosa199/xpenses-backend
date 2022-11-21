@@ -2,9 +2,12 @@ const billService = require("../services/billService");
 
 // GET ALL BILLS
 const getAllBills = (req, res) => {
+
+  const { status, month } = req.query;
+
   try {
-    const allBills = billService.getAllBills();
-    res.send({ status: "OK", data: allBills });
+    const allBills = billService.getAllBills({ status, month });
+    res.send({ status: "OK", quantity: allBills.length, data: allBills });
   } catch (error) {
     res
       .status(error?.status || 500)

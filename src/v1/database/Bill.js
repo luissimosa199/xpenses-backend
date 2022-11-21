@@ -2,9 +2,24 @@ const DB = require("./db.json");
 const { saveToDatabase } = require("./utils");
 
 // GET ALL BILLS
-const getAllBills = () => {
+const getAllBills = (filterParams) => {
   try {
-    return DB.bills;
+    let bills = DB.bills;
+
+    // params validations (ifs)
+    if (filterParams.month) {
+      bills = bills.filter(
+        (bill) => bill.month.toLowerCase() === filterParams.month
+      );
+    }
+
+    if (filterParams.status) {
+      bills = bills.filter(
+        (bill) => bill.status.toLowerCase() === filterParams.status
+      );
+    }
+
+    return bills;
   } catch (error) {
     throw { status: 500, message: error };
   }

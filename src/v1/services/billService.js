@@ -2,9 +2,9 @@ const Bill = require("../database/Bill");
 const { v4: uuid } = require("uuid");
 
 // GET ALL BILLS
-const getAllBills = () => {
+const getAllBills = (filterParams) => {
   try {
-    const allBills = Bill.getAllBills();
+    const allBills = Bill.getAllBills(filterParams);
     return allBills;
   } catch (error) {
     throw error;
@@ -26,6 +26,7 @@ const createNewBill = (newBill) => {
   const billToInsert = {
     ...newBill,
     id: uuid(),
+    month: newBill.date.match(/\/\d{2}\//g)[0].slice(1,3),
     createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
     updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
   };
