@@ -1,36 +1,44 @@
 {
   "bills": [
     {
-      "id": 1,
+      "id": "ead52384-e171-414f-9c67-03acb03c2e4a",
       "name": "Fibertel",
       "description": "Internet",
       "date": "1/09/22",
       "amount": 2200,
-      "status": "notpaid"
+      "status": "notpaid",
+      "createdAt": "11/19/2022, 2:47:58 PM",
+      "updatedAt": "11/19/2022, 2:47:58 PM"
     },
     {
-      "id": 2,
+      "id": "ead52984-e171-414f-9c57-03acb03c2e4a",
       "name": "Edenor",
       "description": "Electricidad",
       "date": "1/09/22",
       "amount": 4000,
-      "status": "unknown"
+      "status": "unknown",
+      "createdAt": "11/19/2022, 2:47:58 PM",
+      "updatedAt": "11/19/2022, 2:47:58 PM"
     },
     {
-      "id": 3,
+      "id": "ead52984-e171-636f-9c67-03acb03c2e4a",
       "name": "Movistar",
       "description": "Telefonia movil",
       "date": "1/09/22",
       "amount": 710,
-      "status": "unknown"
+      "status": "unknown",
+      "createdAt": "11/19/2022, 2:47:58 PM",
+      "updatedAt": "11/19/2022, 2:47:58 PM"
     },
     {
-      "id": 4,
+      "id": "ead52984-e171-414f-9c67-03accul02e4a",
       "name": "Mercado Pago",
       "description": "Credito",
       "date": "1/09/22",
       "amount": 25000,
-      "status": "paid"
+      "status": "paid",
+      "createdAt": "11/19/2022, 2:47:58 PM",
+      "updatedAt": "11/19/2022, 2:47:58 PM"
     },
     {
       "name": "Hominis",
@@ -66,11 +74,11 @@
       "name": "Alquiler",
       "description": "Vivienda",
       "date": "05/10/22",
-      "amount": 46500,
+      "amount": 46550,
       "status": "paid",
       "id": "ead52984-e171-414f-9c67-03acb03c2e4a",
       "createdAt": "11/19/2022, 2:47:58 PM",
-      "updatedAt": "11/19/2022, 2:47:58 PM"
+      "updatedAt": "11/21/2022, 5:08:27 PM"
     }
   ]
 }
