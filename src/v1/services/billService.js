@@ -2,9 +2,9 @@ const Bill = require("../database/Bill");
 const { v4: uuid } = require("uuid");
 
 // GET ALL BILLS
-const getAllBills = (filterParams) => {
+const getAllBills = async (filterParams) => {
   try {
-    const allBills = Bill.getAllBills(filterParams);
+    const allBills = await Bill.getAllBills(filterParams);
     return allBills;
   } catch (error) {
     throw error;
@@ -12,9 +12,9 @@ const getAllBills = (filterParams) => {
 };
 
 // GET ONE BILL
-const getOneBill = (billId) => {
+const getOneBill = async (billId) => {
   try {
-    const bill = Bill.getOneBill(billId);
+    const bill = await Bill.getOneBill(billId);
     return bill;
   } catch (error) {
     throw error;
@@ -22,17 +22,10 @@ const getOneBill = (billId) => {
 };
 
 // CREATE ONE BILL
-const createNewBill = (newBill) => {
-  const billToInsert = {
-    ...newBill,
-    id: uuid(),
-    month: newBill.date.match(/\/\d{2}\//g)[0].slice(1,3),
-    createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-    updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-  };
-
+const createNewBill = async (newBill) => {
+  const billToInsert = newBill;
   try {
-    const createdBill = Bill.createNewBill(billToInsert);
+    const createdBill = await Bill.createNewBill(billToInsert);
     return createdBill;
   } catch (error) {
     throw error;
@@ -40,9 +33,9 @@ const createNewBill = (newBill) => {
 };
 
 // UPDATE ONE BILL
-const updateOneBill = (billId, changes) => {
+const updateOneBill = async (billId, changes) => {
   try {
-    const updatedBill = Bill.updateOneBill(billId, changes);
+    const updatedBill = await Bill.updateOneBill(billId, changes);
     return updatedBill;
   } catch (error) {
     throw error;
@@ -50,9 +43,10 @@ const updateOneBill = (billId, changes) => {
 };
 
 // DELETE ONE BILL
-const deleteOneBill = (billId) => {
+const deleteOneBill = async (billId) => {
   try {
-    Bill.deleteOneBill(billId);
+    const deletedBill = await Bill.deleteOneBill(billId);
+    return deletedBill
   } catch (error) {
     throw error;
   }
