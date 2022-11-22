@@ -1,24 +1,10 @@
-const DB = require("./db.json");
-const { saveToDatabase } = require("./utils");
+const mongoose = require("mongoose");
+const Bill = require("../models/billModel");
 
 // GET ALL BILLS
-const getAllBills = (filterParams) => {
+const getAllBills = async (filterParams) => {
   try {
-    let bills = DB.bills;
-
-    // params validations (ifs)
-    if (filterParams.month) {
-      bills = bills.filter(
-        (bill) => bill.month.toLowerCase() === filterParams.month
-      );
-    }
-
-    if (filterParams.status) {
-      bills = bills.filter(
-        (bill) => bill.status.toLowerCase() === filterParams.status
-      );
-    }
-
+    const bills = await Bill.find({}).sort({ createAt: -1 });
     return bills;
   } catch (error) {
     throw { status: 500, message: error };
@@ -26,15 +12,18 @@ const getAllBills = (filterParams) => {
 };
 
 // GET ONE BILL
-const getOneBill = (billId) => {
+const getOneBill = async (billId) => {
   try {
-    const bill = DB.bills.find((bill) => bill.id === billId);
-    if (!bill) {
-      throw {
-        status: 400,
-        message: "ID Parameter not found",
-      };
+    if (!mongoose.Types.ObjectId.isValid(billId)) {
+      throw { status: 404, message: "ID not valid" };
     }
+
+    const bill = await Bill.findById(billId);
+
+    if (!bill) {
+      throw { status: 404, message: "Bill not found" };
+    }
+
     return bill;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
@@ -42,66 +31,48 @@ const getOneBill = (billId) => {
 };
 
 // CREATE ONE BILL
-const createNewBill = (newBill) => {
+const createNewBill = async (newBill) => {
   try {
-    const isAlreadyAdded =
-      DB.bills.findIndex(
-        (bill) => bill.name === newBill.name && bill.date === newBill.date
-      ) > -1;
-
-    if (isAlreadyAdded) {
-      throw {
-        status: 400,
-        message: `Bill with the same name and date already exists`,
-      };
-    }
-    DB.bills.push(newBill);
-    saveToDatabase(DB);
-    return newBill;
+    const bill = await Bill.create(newBill);
+    return bill;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
   }
 };
 
 // UPDATE ONE BILL
-const updateOneBill = (billId, changes) => {
+const updateOneBill = async (billId, changes) => {
   try {
-    const indexForUpdate = DB.bills.findIndex((bill) => bill.id === billId);
-
-    if (indexForUpdate === -1) {
-      throw {
-        status: 400,
-        message: `Cannot find bill with id of "${billId}"`,
-      };
+    if (!mongoose.Types.ObjectId.isValid(billId)) {
+      throw { status: 404, message: "ID not valid" };
     }
 
-    const updatedBill = {
-      ...DB.bills[indexForUpdate],
-      ...changes,
-      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-    };
+    const bill = await Bill.findOneAndUpdate({ _id: billId }, changes);
 
-    DB.bills[indexForUpdate] = updatedBill;
-    saveToDatabase(DB);
-    return updatedBill;
+    if (!bill) {
+      throw { status: 404, message: "Bill not found" };
+    }
+
+    return bill;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
   }
 };
 
 // DELETE ONE BILL
-const deleteOneBill = (billId) => {
+const deleteOneBill = async (billId) => {
   try {
-    const indexForDeletion = DB.bills.findIndex((bill) => bill.id === billId);
-    if (indexForDeletion === -1) {
-      throw {
-        status: 400,
-        message: `Cannot find bill with id of "${billId}"`,
-      };
+    if (!mongoose.Types.ObjectId.isValid(billId)) {
+      throw { status: 404, message: "ID not valid" };
     }
 
-    DB.bills.splice(indexForDeletion, 1);
-    saveToDatabase(DB);
+    const bill = await Bill.findOneAndDelete({ _id: billId });
+
+    if (!bill) {
+      throw { status: 404, message: "Bill not found" };
+    }
+
+    return bill;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
   }

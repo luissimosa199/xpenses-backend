@@ -1,12 +1,12 @@
 const billService = require("../services/billService");
 
 // GET ALL BILLS
-const getAllBills = (req, res) => {
+const getAllBills = async (req, res) => {
 
   const { status, month } = req.query;
 
   try {
-    const allBills = billService.getAllBills({ status, month });
+    const allBills = await billService.getAllBills({ status, month });
     res.send({ status: "OK", quantity: allBills.length, data: allBills });
   } catch (error) {
     res
@@ -16,7 +16,8 @@ const getAllBills = (req, res) => {
 };
 
 // GET ONE BILL
-const getOneBill = (req, res) => {
+const getOneBill = async (req, res) => {
+
   const {
     params: { billId },
   } = req;
@@ -29,7 +30,7 @@ const getOneBill = (req, res) => {
   }
 
   try {
-    const bill = billService.getOneBill(billId);
+    const bill = await billService.getOneBill(billId);
     res.send({ status: "OK", data: bill });
   } catch (error) {
     res
@@ -39,7 +40,7 @@ const getOneBill = (req, res) => {
 };
 
 // CREATE ONE BILL
-const createNewBill = (req, res) => {
+const createNewBill = async (req, res) => {
   const { body } = req;
 
   //   validation
@@ -70,7 +71,7 @@ const createNewBill = (req, res) => {
   };
 
   try {
-    const createdBill = billService.createNewBill(newBill);
+    const createdBill = await billService.createNewBill(newBill);
     res.status(201).send({ status: "OK", data: createdBill });
   } catch (error) {
     res
@@ -80,7 +81,7 @@ const createNewBill = (req, res) => {
 };
 
 // UPDATE ONE BILL
-const updateOneBill = (req, res) => {
+const updateOneBill = async (req, res) => {
   const {
     body,
     params: { billId },
@@ -94,7 +95,7 @@ const updateOneBill = (req, res) => {
   }
 
   try {
-    const updatedBill = billService.updateOneBill(billId, body);
+    const updatedBill = await billService.updateOneBill(billId, body);
     res.send({ status: "OK", data: updatedBill });
   } catch (error) {
     res
@@ -104,7 +105,7 @@ const updateOneBill = (req, res) => {
 };
 
 // DELETE ONE BILL
-const deleteOneBill = (req, res) => {
+const deleteOneBill = async (req, res) => {
   const {
     params: { billId },
   } = req;
@@ -117,8 +118,8 @@ const deleteOneBill = (req, res) => {
   }
 
   try {
-    billService.deleteOneBill(billId);
-    res.status(204).send({ status: "OK" });
+    const deletedBill = await billService.deleteOneBill(billId);
+    res.status(204).send({ status: "OK", data: deletedBill });
   } catch (error) {
     res
       .status(error?.status || 500)
