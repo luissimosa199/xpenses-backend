@@ -27,6 +27,8 @@ const getOneBill = async (req, res) => {
       status: "FAILED",
       data: { error: "ID Parameter not found" },
     });
+
+    return;
   }
 
   try {

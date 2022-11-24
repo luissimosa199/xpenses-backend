@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 const v1BillRouter = require("./v1/routes/billRoutes");
+const v1UserRouter = require("./v1/routes/userRoutes");
 
 // cors
 app.use(cors());
@@ -15,8 +16,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 // parse json
 app.use(express.json());
-// base url
+// base urls
 app.use("/api/v1/bills", v1BillRouter);
+app.use("/api/v1/user", v1UserRouter);
 // connect to db
 mongoose
   .connect(MONGO_URI)

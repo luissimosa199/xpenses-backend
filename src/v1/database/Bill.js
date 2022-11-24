@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const Bill = require("../models/billModel");
 
-const mongoose = require("mongoose");
-const Bill = require("../models/billModel");
-
 // GET ALL BILLS
 const getAllBills = async (filterParams) => {
   try {
