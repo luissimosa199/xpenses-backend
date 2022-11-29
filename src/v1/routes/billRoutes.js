@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const requireAuth = require("../middleware/requireAuth");
 
 const {
   getAllBills,
@@ -8,6 +9,8 @@ const {
   updateOneBill,
   deleteOneBill,
 } = require("../controllers/billController");
+
+router.use(requireAuth)
 
 router.get("/", getAllBills);
 

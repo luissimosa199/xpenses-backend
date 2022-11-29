@@ -1,9 +1,13 @@
 const User = require("../database/User");
+const { createToken } = require("../utils/createToken");
 
 const loginUser = async (loginData) => {
   try {
+
     const data = await User.loginUser(loginData);
-    return data;
+    const token = createToken(data._id);
+    return { email: data, token };
+
   } catch (error) {
     throw error;
   }
@@ -11,8 +15,11 @@ const loginUser = async (loginData) => {
 
 const signupUser = async (signupData) => {
   try {
+    
     const data = await User.signupUser(signupData);
-    return data;
+    const token = createToken(data._id);
+    return { email: data, token };
+
   } catch (error) {
     throw error;
   }

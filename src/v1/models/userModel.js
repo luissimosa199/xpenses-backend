@@ -17,9 +17,8 @@ const userSchema = new Schema({
 
 // static signup method
 
-userSchema.statics.signup = async function({email, password}) {
-
-  const exist = await this.findOne({email});
+userSchema.statics.signup = async function ({ email, password }) {
+  const exist = await this.findOne({ email });
 
   if (exist) {
     throw Error("Email not available");
@@ -31,6 +30,26 @@ userSchema.statics.signup = async function({email, password}) {
   const user = await this.create({ email, password: hash });
 
   return user;
+};
+
+// static login method
+
+userSchema.statics.login = async function ({ email, password }) {
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw { status: 401, message: "Incorrect login data" };
+  }
+
+  const match = await bcrypt.compare(password, user.password)
+
+  if(!match) {
+    throw { status: 401, message: "Incorrect login data" };
+  }
+
+  return user;
+
 };
 
 module.exports = mongoose.model("User", userSchema);
