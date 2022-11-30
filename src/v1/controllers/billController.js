@@ -3,10 +3,18 @@ const billService = require("../services/billService");
 // GET ALL BILLS
 const getAllBills = async (req, res) => {
 
-  const { status, month } = req.query;
+  const filterParams = req.query;
+
+  if(!filterParams.family){
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "Family parameter not found, you must loggin into a family to get bills" },
+    });
+
+  }
 
   try {
-    const allBills = await billService.getAllBills({ status, month });
+    const allBills = await billService.getAllBills(filterParams);
     res.send({ status: "OK", quantity: allBills.length, data: allBills });
   } catch (error) {
     res
@@ -51,13 +59,15 @@ const createNewBill = async (req, res) => {
     !body.description ||
     !body.date ||
     !body.amount ||
-    !body.status
+    !body.status ||
+    !body.createdBy ||
+    !body.family
   ) {
     res.status(400).send({
       status: "FAILED",
       data: {
         error:
-          "One of the following keys is missing or is empty in request body: 'name', 'description', 'date', 'amount', 'status'",
+          "One of the following keys is missing or is empty in request body: 'name', 'description', 'date', 'amount', 'status', 'createdBy', 'family'",
       },
     });
     return;
@@ -70,6 +80,8 @@ const createNewBill = async (req, res) => {
     date: body.date,
     amount: body.amount,
     status: body.status,
+    createdBy: body.createdBy,
+    family: body.family
   };
 
   try {

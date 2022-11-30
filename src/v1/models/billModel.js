@@ -7,6 +7,8 @@ const billSchema = new Schema({
   date: {type: String, required: true},
   amount: {type: Number, required: true},
   status: {type: String, required: true},
+  createdBy: {type: String, required: true},
+  family: {type: String, required: true},
 }, {timestamps: true});
 
 module.exports = mongoose.model('Bill', billSchema)

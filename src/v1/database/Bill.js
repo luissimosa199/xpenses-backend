@@ -3,8 +3,9 @@ const Bill = require("../models/billModel");
 
 // GET ALL BILLS
 const getAllBills = async (filterParams) => {
+
   try {
-    const bills = await Bill.find({}).sort({ createAt: -1 });
+    const bills = await Bill.find(filterParams).sort({ createAt: -1 });
     return bills;
   } catch (error) {
     throw { status: 500, message: error };
