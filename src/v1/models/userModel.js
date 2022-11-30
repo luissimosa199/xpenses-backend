@@ -16,7 +16,8 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-  }
+  },
+  families: [{type: Schema.Types.ObjectId}],
 });
 
 // static signup method
@@ -39,21 +40,19 @@ userSchema.statics.signup = async function ({ email, password, name }) {
 // static login method
 
 userSchema.statics.login = async function ({ email, password }) {
-
   const user = await this.findOne({ email });
 
   if (!user) {
     throw { status: 401, message: "Incorrect login data" };
   }
 
-  const match = await bcrypt.compare(password, user.password)
+  const match = await bcrypt.compare(password, user.password);
 
-  if(!match) {
+  if (!match) {
     throw { status: 401, message: "Incorrect login data" };
   }
 
   return user;
-
 };
 
 module.exports = mongoose.model("User", userSchema);

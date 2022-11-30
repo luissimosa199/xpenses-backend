@@ -5,11 +5,11 @@ const familyService = require("../services/familyService");
 const loginFamily = async (req, res) => {
   const { body } = req;
 
-  if (!body.name || !body.password) {
+  if (!body.name || !body.password || !body.user_id) {
     res.status(400).send({
       status: "FAILED",
       data: {
-        error: "Missing name or password",
+        error: "Missing name, password or user id",
       },
     });
 
@@ -18,7 +18,7 @@ const loginFamily = async (req, res) => {
 
   try {
     const data = await familyService.loginFamily(body);
-    res.status(201).send({ status: "OK", data: data });
+    res.status(201).send({ status: "OK", data });
   } catch (error) {
     res
       .status(error?.status || 500)
@@ -57,7 +57,7 @@ const signupFamily = async (req, res) => {
 
   try {
     const data = await familyService.signupFamily(body);
-    res.status(201).send({ status: "OK", data: data });
+    res.status(201).send({ status: "OK", data });
   } catch (error) {
     res
       .status(error?.status || 500)

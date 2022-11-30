@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const User = require("./userModel");
 
 const Schema = mongoose.Schema;
 
@@ -22,7 +23,6 @@ const familySchema = new Schema({
 // static signup family method
 
 familySchema.statics.signup = async function ({ name, password, address }) {
-
   const exist = await this.findOne({ name });
 
   if (exist) {
@@ -39,17 +39,44 @@ familySchema.statics.signup = async function ({ name, password, address }) {
 
 // static family login method
 
-familySchema.statics.login = async function ({ name, password }) {
+familySchema.statics.login = async function ({ name, password, user_id }) {
   const family = await this.findOne({ name });
 
   if (!family) {
-    throw { status: 401, message: "Incorrect family data" };
+    throw { status: 401, message: "Incorrect family name" };
   }
 
   const match = await bcrypt.compare(password, family.password);
 
   if (!match) {
-    throw { status: 401, message: "Incorrect family data" };
+    throw { status: 401, message: "Incorrect family password" };
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    throw { status: 404, message: "ID not valid" };
+  }
+
+  // const familyId = family._id;
+
+  const familyIsAdded = await User.find({families: family._id});
+
+  if(familyIsAdded){
+    throw {
+      status: 403,
+      message: "Family already added",
+    };
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: user_id },
+    { $push: { families: family._id } }
+  );
+
+  if (!user) {
+    throw {
+      status: 404,
+      message: "User not found, you must be logged in before you add a family",
+    };
   }
 
   return family;

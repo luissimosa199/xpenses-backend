@@ -4,10 +4,10 @@ const router = express.Router();
 
 // LOGIN
 
-router.post('/enter', loginFamily)
+router.post('/login', loginFamily)
 
 // SIGNUP
 
-router.post('/create', signupFamily)
+router.post('/signup', signupFamily)
 
 module.exports = router;
