@@ -6,7 +6,7 @@ const loginUser = async (loginData) => {
 
     const data = await User.loginUser(loginData);
     const token = createToken(data._id);
-    return { email: data, token };
+    return { name: data, token };
 
   } catch (error) {
     throw error;

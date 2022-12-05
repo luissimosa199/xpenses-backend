@@ -4,7 +4,7 @@ const loginUser = async (loginData) => {
   try {
 
     const user = await User.login(loginData);
-    return user.email;
+    return user.name;
 
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
