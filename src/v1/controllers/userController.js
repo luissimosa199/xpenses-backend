@@ -18,7 +18,7 @@ const loginUser = async (req, res) => {
 
   try {
     const data = await userService.loginUser(body);
-    res.status(201).send({ status: "OK", data: data });
+    res.status(201).send({ status: "OK", data });
   } catch (error) {
     res
       .status(error?.status || 500)

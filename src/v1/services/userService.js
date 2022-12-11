@@ -4,9 +4,9 @@ const { createToken } = require("../utils/createToken");
 const loginUser = async (loginData) => {
   try {
 
-    const data = await User.loginUser(loginData);
-    const token = createToken(data._id);
-    return { name: data, token };
+    const user = await User.loginUser(loginData);
+    const token = createToken(user._id);
+    return { user, token };
 
   } catch (error) {
     throw error;

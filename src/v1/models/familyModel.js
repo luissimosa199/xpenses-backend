@@ -60,7 +60,7 @@ familySchema.statics.login = async function ({ name, password, user_id }) {
 
   const familyIsAdded = await User.find({families: family._id});
 
-  if(familyIsAdded){
+  if(!familyIsAdded.length === 0){
     throw {
       status: 403,
       message: "Family already added",
