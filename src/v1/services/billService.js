@@ -31,7 +31,7 @@ const createNewBill = async (newBill) => {
   }
 };
 
-// UPDATE ONE BILL
+// UPDATE ONE BILL 111
 const updateOneBill = async (billId, changes) => {
   try {
     const updatedBill = await Bill.updateOneBill(billId, changes);
