@@ -17,7 +17,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  families: [{type: Schema.Types.ObjectId}],
+  families: [{ type: Schema.Types.ObjectId }],
 });
 
 // static signup method
@@ -34,7 +34,13 @@ userSchema.statics.signup = async function ({ email, password, name }) {
 
   const user = await this.create({ email, password: hash, name });
 
-  return user;
+  // filtrar la password
+  return {
+    email: user.email,
+    families: user.families,
+    name: user.name,
+    _id: user._id,
+  };
 };
 
 // static login method

@@ -18,11 +18,12 @@ const signupUser = async (signupData) => {
     
     const data = await User.signupUser(signupData);
     const token = createToken(data._id);
-    return { email: data, token };
+    return { data, token };
 
   } catch (error) {
     throw error;
   }
+
 };
 
 module.exports = { loginUser, signupUser };
