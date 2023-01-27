@@ -12,7 +12,6 @@ const loginFamily = async (req, res) => {
         error: "Missing name, password or user id",
       },
     });
-
     return;
   }
 

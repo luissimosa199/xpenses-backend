@@ -22,19 +22,16 @@ const familySchema = new Schema({
 
 // static signup family method
 
+
 familySchema.statics.signup = async function ({ name, password, address }) {
   const exist = await this.findOne({ name });
-
   if (exist) {
     throw Error("Family name not available");
   }
-
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-
   const family = await this.create({ name, password: hash, address });
-
-  return family;
+  return { name: family.name, _id: family._id };
 };
 
 // static family login method
@@ -56,11 +53,10 @@ familySchema.statics.login = async function ({ name, password, user_id }) {
     throw { status: 404, message: "ID not valid" };
   }
 
-  // const familyId = family._id;
-
+  // not working
   const familyIsAdded = await User.find({families: family._id});
 
-  if(!familyIsAdded.length === 0){
+  if(!Array.isArray(familyIsAdded)){
     throw {
       status: 403,
       message: "Family already added",
@@ -69,7 +65,9 @@ familySchema.statics.login = async function ({ name, password, user_id }) {
 
   const user = await User.findOneAndUpdate(
     { _id: user_id },
-    { $push: { families: family._id } }
+    // 
+    { $push: { families: JSON.stringify({_id: family._id, name: family.name}) } }
+    
   );
 
   if (!user) {
@@ -79,7 +77,10 @@ familySchema.statics.login = async function ({ name, password, user_id }) {
     };
   }
 
-  return family;
+  return {
+    name: family.name,
+    _id: family._id,
+  };
 };
 
 module.exports = mongoose.model("Family", familySchema);

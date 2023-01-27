@@ -17,7 +17,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  families: [{ type: Schema.Types.ObjectId }],
+  families: [{ type: String }],
 });
 
 // static signup method
@@ -58,7 +58,12 @@ userSchema.statics.login = async function ({ email, password }) {
     throw { status: 401, message: "Incorrect login data" };
   }
 
-  return user;
+  return {
+    email: user.email,
+    families: user.families,
+    name: user.name,
+    _id: user._id,
+  };
 };
 
 module.exports = mongoose.model("User", userSchema);

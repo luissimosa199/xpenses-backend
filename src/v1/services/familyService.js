@@ -2,11 +2,8 @@ const Family = require("../database/Family");
 
 const loginFamily = async (loginData) => {
   try {
-
     const data = await Family.loginFamily(loginData);
-
-    return { name: data };
-
+    return data;
   } catch (error) {
     throw error;
   }
@@ -14,11 +11,8 @@ const loginFamily = async (loginData) => {
 
 const signupFamily = async (signupData) => {
   try {
-    
     const data = await Family.signupFamily(signupData);
-
-    return { name: data };
-
+    return data;
   } catch (error) {
     throw error;
   }
